@@ -5,18 +5,17 @@ import { CustomersType, User } from './definitions';
 export async function fetchFilteredCustomers(query: string) {
   noStore();
   try {
-    const data = await sql<CustomersType>`
-		SELECT
-		  customers.id,
-		  customers.name,
-		  customers.email,
-		FROM customers
-		WHERE
-		  customers.name ILIKE ${`%${query}%`} OR
-      customers.email ILIKE ${`%${query}%`}
-		GROUP BY customers.id, customers.name, customers.email
-		ORDER BY customers.name ASC
-	  `;
+    const data = await sql<CustomersType[]>`
+      SELECT
+        customers.id,
+        customers.name,
+        customers.email
+      FROM customers
+      WHERE
+        customers.name ILIKE ${'%' + query + '%'} OR
+        customers.email ILIKE ${'%' + query + '%'}
+      ORDER BY customers.name ASC
+    `;
 
     const customers = data.rows.map((customer) => ({
       ...customer,
@@ -25,7 +24,7 @@ export async function fetchFilteredCustomers(query: string) {
     return customers;
   } catch (err) {
     console.error('Database Error:', err);
-    throw new Error('Failed to fetch customer table.');
+    throw new Error('Failed to fetch customers.');
   }
 }
 

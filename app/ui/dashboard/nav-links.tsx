@@ -1,23 +1,21 @@
 'use client';
 
-import {
-  DocumentDuplicateIcon,
-  HomeIcon,
-  UserGroupIcon,
-} from '@heroicons/react/24/outline';
+import { UserGroupIcon } from '@heroicons/react/24/outline';
 import clsx from 'clsx';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { ForwardRefExoticComponent, RefAttributes, SVGProps } from 'react';
 
-// Map of links to display in the side navigation.
-// Depending on the size of the application, this would be stored in a database.
-const links = [
-  { name: 'Home', href: '/dashboard', icon: HomeIcon },
-  {
-    name: 'Invoices',
-    href: '/dashboard/invoices',
-    icon: DocumentDuplicateIcon,
-  },
+const links: {
+  name: string;
+  href: string;
+  icon: ForwardRefExoticComponent<
+    Omit<SVGProps<SVGSVGElement>, 'ref'> & {
+      title?: string | undefined;
+      titleId?: string | undefined;
+    } & RefAttributes<SVGSVGElement>
+  >;
+}[] = [
   { name: 'Customers', href: '/dashboard/customers', icon: UserGroupIcon },
 ];
 
